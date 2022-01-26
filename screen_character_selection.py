@@ -1,8 +1,8 @@
 import tkinter as tk
 
-from characters import Character
+from characters import *
 
-class Screen_CharacterSelection (tk.Frame, Character):
+class Screen_CharacterSelection (tk.Frame, Character, CharacterRoster):
     def __init__ (self, master, roster, callback_on_selected):
         super().__init__(master)
        # Save the CharacterRoster  
@@ -45,18 +45,30 @@ class Screen_CharacterSelection (tk.Frame, Character):
         self.character_index = tk.StringVar()
         self.character_index.set(None)
 
-        i = 0
+        tk.Label(self, text = "Hit Points").grid(row = 0, column = 3, sticky = tk.W)
+        tk.Label(self, text = "Dexterity").grid(row = 0, column = 4, sticky = tk.W)
+        tk.Label(self, text = "Strength").grid(row = 0, column = 5, sticky = tk.W)
+
+        value = 0
+        i = 1
         for char in self.roster.character_list:
-            tk.Radiobutton(self, text = character.name).grid(row = i, column = 0)
+            tk.Radiobutton(self, text = char.name, value = value, variable = self.character_index).grid(row = i, column = 0)
+            imageSmall = tk.PhotoImage(file="images/" + char.small_image)
+            w= tk.Label (self,
+                        image = imageSmall, 
+                         )
+            w.photo = imageSmall # It's odd.
+            w.grid(row = i, column = 1)
+            tk.Label(self, text = char.hit_points).grid(row = i, column = 3)
+            tk.Label(self, text = char.dexterity).grid(row = i, column = 4)
+            tk.Label(self, text = char.strength).grid(row = i, column = 5)
             i += 1
+            value += 1
 
-
-        tk.Label(self, text = "Hit Points").grid(row = 0, column = 3)
-        tk.Label(self, text = "Dexterity").grid(row = 0, column = 4)
-        tk.Label(self, text = "Strength").grid(row = 0, column = 5)
+        tk.Button(self, text = "Character Selected!", command = self.selected_clicked, bg = "magenta", fg = "white").grid(row = 7, column = 5)
+        
         
        
- 
     def selected_clicked(self):
         ''' This method is to be called when the "Character Selected!" button is clicked. 
             Notice that it passes self.character_index back to the callback method. '''         
