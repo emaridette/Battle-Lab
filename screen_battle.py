@@ -1,6 +1,6 @@
-import tkinter
+import tkinter as tk
 
-class Screen_Battle (tkinter.Frame):
+class Screen_Battle (tk.Frame):
     def __init__ (self, master, player1, player2, callback_on_exit):
         super().__init__(master)
 
@@ -22,9 +22,26 @@ class Screen_Battle (tkinter.Frame):
         '''
         This method creates all of the (initial) widgets for the battle page.
         '''
-        #
-        # TO DO
-        #
+        tk.Button(self, text = "Attack", command = self.attack_clicked).grid(row = 0)
+
+        tk.Label(self, text = "You").grid(row = 2, column = 0)
+        tk.Label(self, text = "Computer").grid(row = 2, column = 1)
+
+        imageSmall = tk.PhotoImage(file="images/" + self.player1.large_image)
+        w= tk.Label (self,
+                    image = imageSmall, 
+                        )
+        w.photo = imageSmall # It's odd.
+        w.grid(row = 3, column = 0)
+        imageSmall = tk.PhotoImage(file="images/" + self.player2.large_image)
+        w= tk.Label (self,
+                    image = imageSmall, 
+                        )
+        w.photo = imageSmall # It's odd.
+        w.grid(row = 3, column = 1)
+        
+        tk.Label(self, text = f"{self.player1.hit_points}/{self.player1.hit_points} HP").grid(row = 4, column = 0)
+        tk.Label(self, text = f"{self.player2.hit_points}/{self.player2.hit_points} HP").grid(row = 4, column = 1)
         
     def attack_clicked(self):
         ''' This method is called when the user presses the "Attack" button.
