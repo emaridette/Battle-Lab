@@ -1,4 +1,5 @@
 import tkinter as tk
+from characters import *
 
 class Screen_Battle (tk.Frame):
     def __init__ (self, master, player1, player2, callback_on_exit):
@@ -22,7 +23,11 @@ class Screen_Battle (tk.Frame):
         '''
         This method creates all of the (initial) widgets for the battle page.
         '''
-        tk.Button(self, text = "Attack", command = self.attack_clicked).grid(row = 0)
+        self.attack = tk.Button(self, text = "Attack", command = self.attack_clicked)
+        self.attack.grid(row = 0)
+        self.message = tk.Label(self)
+        self.message["text"] = " "
+        self.message.grid(row = 0, column = 1)
 
         tk.Label(self, text = "You").grid(row = 2, column = 0)
         tk.Label(self, text = "Computer").grid(row = 2, column = 1)
@@ -40,8 +45,10 @@ class Screen_Battle (tk.Frame):
         w.photo = imageSmall # It's odd.
         w.grid(row = 3, column = 1)
         
-        tk.Label(self, text = f"{self.player1.hit_points}/{self.player1.hit_points} HP").grid(row = 4, column = 0)
-        tk.Label(self, text = f"{self.player2.hit_points}/{self.player2.hit_points} HP").grid(row = 4, column = 1)
+        self.hp1 = tk.Label(self, text = f"{self.player1.hit_points}/{self.player1_max_hp} HP")
+        self.hp1.grid(row = 4, column = 0)
+        self.hp2 = tk.Label(self, text = f"{self.player2.hit_points}/{self.player2_max_hp} HP")
+        self.hp2.grid(row = 4, column = 1)
         
     def attack_clicked(self):
         ''' This method is called when the user presses the "Attack" button.
@@ -55,10 +62,23 @@ class Screen_Battle (tk.Frame):
             To remove a widget, use the destroy() method. For example:
     
                 self.button.destroy()   
-        '''        
-        #
-        # TO DO
-        #
+        '''  
+        self.result1 = self.player1.attack(self.player2)      
+        if self.player2.hit_points > 0:
+            self.result2 = self.player2.attack(self.player1)
+
+        self.message["text"] = f"{self.result1}\n{self.result2}"
+        self.hp1["text"] = f"{self.player1.hit_points}/{self.player1_max_hp} HP"
+        self.hp2["text"] = f"{self.player2.hit_points}/{self.player2_max_hp} HP"
+              
+        if self.player1.hit_points <= 0 or self.player2.hit_points <= 0:
+            if self.player1.hit_points > 0:
+                self.message["text"] = f"{self.result1}\n{self.result2}\n{self.player1.name} is victorious!"
+            else:
+                self.message["text"] = f"{self.result1}\n{self.result2}\n{self.player2.name} is victorious!"
+            self.attack.destroy()
+            tk.Button(self, text = "Exit", command = self.exit_clicked).grid(row = 0)
+        
                                             
     def exit_clicked(self):
         ''' This method is called when the Exit button is clicked. 
