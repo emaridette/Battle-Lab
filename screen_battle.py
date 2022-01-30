@@ -23,7 +23,7 @@ class Screen_Battle (tk.Frame):
         '''
         This method creates all of the (initial) widgets for the battle page.
         '''
-        self.attack = tk.Button(self, text = "Attack", command = self.attack_clicked)
+        self.attack = tk.Button(self, text = "Attack", command = self.attack_clicked, bg = "magenta", fg = "white")
         self.attack.grid(row = 0)
         self.message = tk.Label(self)
         self.message["text"] = " "
@@ -77,7 +77,7 @@ class Screen_Battle (tk.Frame):
             else:
                 self.message["text"] = f"{self.result1}\n{self.result2}\n{self.player2.name} is victorious!"
             self.attack.destroy()
-            tk.Button(self, text = "Exit", command = self.exit_clicked).grid(row = 0)
+            tk.Button(self, text = "Exit", command = self.exit_clicked, bg = "magenta", fg = "white").grid(row = 0)
         
                                             
     def exit_clicked(self):
